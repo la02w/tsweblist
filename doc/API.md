@@ -25,8 +25,7 @@
       "count": 1,
       "data": [
         {
-          "client_nickname": "serveradmin",
-          "cid": "1"
+            "client_nickname": "serveradmin"
         }
         // ......
       ],
