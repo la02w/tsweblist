@@ -66,12 +66,12 @@ func checkApikey(fullURL string) *Status {
 //
 //	@Return	int,[]Client,int
 //	在线人数，在线列表，状态码
-func GetServerInfoByID(id string) (int, []Body, int) {
+func GetServerInfoByID(id string) (*ClientList, error) {
 	var server TsServerInfo
 	// 根据ID查询服务器记录
 	result := db.First(&server, "id = ?", id)
 	if result.Error != nil {
-		return -1, nil, 500
+		return nil, result.Error
 	}
 	// 根据服务器保存的WebQuery和APIkey查询在线人数
 	return getUserCount(&server)
@@ -83,29 +83,29 @@ func GetServerInfoByID(id string) (int, []Body, int) {
 //
 //	@Return int,[]Client,int
 //	在线人数，在线列表，状态码
-func getUserCount(server *TsServerInfo) (int, []Body, int) {
+func getUserCount(server *TsServerInfo) (*ClientList, error) {
 	fullURL := server.WebQuery + "/1/clientlist?api-key=" + server.Apikey
 	resp, err := http.Get(fullURL)
 	// 处理请求错误
 	if err != nil {
 		fmt.Println("Error fetching URL:", err)
-		return -1, nil, 500
+		return nil, err
 	}
 	defer resp.Body.Close()
 	body, err := io.ReadAll(resp.Body)
 	// 处理读取错误
 	if err != nil {
 		fmt.Println("Error reading response body:", err)
-		return -1, nil, 500
+		return nil, err
 	}
-	var response TsJsonData
+	var response ClientList
 	err = json.Unmarshal(body, &response)
 	// 处理解析错误
 	if err != nil {
 		fmt.Println("Error unmarshalling JSON:", err)
-		return -1, nil, 500
+		return nil, err
 	}
-	return len(response.Body), response.Body, 200
+	return &response, nil
 
 }
 

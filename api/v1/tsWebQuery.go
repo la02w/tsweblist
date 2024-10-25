@@ -24,16 +24,17 @@ func AddServerInfo(c *gin.Context) {
 // 获取在线人数
 func GetOnlineUserCount(c *gin.Context) {
 	id := c.Param("id")
-	var count, onlineUserList, code = model.GetServerInfoByID(id)
-	var status model.Status
-	status.Status.Code = code
-	status.Status.Msg = "Ok or Error"
-	c.JSON(http.StatusOK, gin.H{
-		"status": status.Status,
-		"count":  count,
-		"data":   onlineUserList,
-		"id":     id,
-	})
+	var data, err = model.GetServerInfoByID(id)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"status": gin.H{
+				"code":    500,
+				"message": "Error",
+			},
+		})
+	}
+	data.Count = len(data.Body)
+	c.JSON(http.StatusOK, data)
 }
 
 // 创建频道
