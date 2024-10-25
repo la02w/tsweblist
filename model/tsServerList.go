@@ -110,7 +110,7 @@ func getUserCount(server *TsServerInfo) (*ClientList, error) {
 }
 
 // 创建永久服务器
-func CreateChannel(data ChannelInfo) *TsJsonData {
+func CreateChannel(data ChannelInfo) *ChannelData {
 	var server TsServerInfo
 	result := db.First(&server, "id = ?", data.ServerId)
 	if result.Error != nil {
@@ -135,7 +135,7 @@ func CreateChannel(data ChannelInfo) *TsJsonData {
 		fmt.Println("Error reading response body:", err)
 		return nil
 	}
-	var response TsJsonData
+	var response ChannelData
 	err = json.Unmarshal(body, &response)
 	// 处理解析错误
 	if err != nil {
