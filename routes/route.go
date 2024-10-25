@@ -1,0 +1,23 @@
+package routes
+
+import (
+	v1 "tsweblist/api/v1"
+	"tsweblist/middleware"
+	"tsweblist/utils"
+
+	"github.com/gin-gonic/gin"
+)
+
+func InitRouter() {
+	gin.SetMode(utils.GINMODE)
+	r := gin.Default()
+	r.Use(middleware.Cors())
+
+	router := r.Group("api/v1")
+	{
+		router.GET("getOnlineUserCount/:id", v1.GetOnlineUserCount)
+		router.POST("addServerInfo", v1.AddServerInfo)
+		router.POST("createChannel", v1.CreateChannel)
+	}
+	r.Run(utils.GINPORT)
+}
