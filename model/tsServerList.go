@@ -6,7 +6,9 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"strings"
 	"time"
+	"tsweblist/utils"
 
 	"gorm.io/gorm"
 )
@@ -143,5 +145,24 @@ func CreateChannel(data ChannelInfo) *ChannelData {
 		fmt.Println("Error unmarshalling JSON:", err)
 		return nil
 	}
+	cid := ""
+	linkUrl := ""
+	for _, item := range response.Body {
+		cid = item.CID
+	}
+	// 判断创建频道状态 不为0则创建失败
+	if response.Status.Code != 0 {
+		return &response
+	}
+	// 如果是ip+端口或者域名+端口 则切割字符串
+	parts := strings.Split(server.LinkSrv, ":")
+
+	if len(parts) == 2 {
+		linkUrl = fmt.Sprintf("ts3server://%s?port=%s&cid=%s&channelpassword=%s", parts[0], parts[1], cid, data.ChannelPassword)
+	} else {
+		linkUrl = fmt.Sprintf("ts3server://%s?cid=%s&channelpassword=%s", server.LinkSrv, cid, data.ChannelPassword)
+	}
+	// 发送邮件
+	utils.SeedEmail(data.Email, linkUrl)
 	return &response
 }
