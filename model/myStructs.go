@@ -28,7 +28,8 @@ type StatusInfo struct {
 
 // 创建频道请求体
 type ChannelInfo struct {
-	ServerId        string `json:"sid"`
-	ChannelName     string `json:"channel_name"`
-	ChannelPassword string `json:"channel_password"`
+	ServerId          string `json:"sid"`
+	ChannelName       string `json:"channel_name"`
+	ChannelPassword   string `json:"channel_password"`
+	ChannelMaxclients string `json:"channel_maxclients"`
 }

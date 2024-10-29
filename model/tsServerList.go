@@ -116,11 +116,12 @@ func CreateChannel(data ChannelInfo) *ChannelData {
 	if result.Error != nil {
 		return nil
 	}
-	fullURL := fmt.Sprintf("%s/1/channelcreate?api-key=%s&channel_name=%s&channel_password=%s&channel_codec=5&channel_codec_quality=10&channel_flag_permanent=1&channel_maxclients=8&channel_flag_maxclients_unlimited=0&channel_flag_maxfamilyclients_inherited=1&channel_flag_maxfamilyclients_unlimited=0",
+	fullURL := fmt.Sprintf("%s/1/channelcreate?api-key=%s&channel_name=%s&channel_password=%s&channel_codec=5&channel_codec_quality=10&channel_flag_permanent=1&channel_maxclients=%s&channel_flag_maxclients_unlimited=0&channel_flag_maxfamilyclients_inherited=1&channel_flag_maxfamilyclients_unlimited=0",
 		server.WebQuery,
 		server.Apikey,
 		url.QueryEscape(data.ChannelName),
 		data.ChannelPassword,
+		data.ChannelMaxclients,
 	)
 	resp, err := http.Get(fullURL)
 	// 处理请求错误
