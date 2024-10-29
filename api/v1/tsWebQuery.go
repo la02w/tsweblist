@@ -3,6 +3,7 @@ package v1
 import (
 	"net/http"
 	"tsweblist/model"
+	"tsweblist/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -40,6 +41,7 @@ func GetOnlineUserCount(c *gin.Context) {
 // 创建频道
 func CreateChannel(c *gin.Context) {
 	var data model.ChannelInfo
+	data.ChannelPassword = utils.GeneratePassword()
 	_ = c.ShouldBindJSON(&data)
 	body := model.CreateChannel(data)
 	c.JSON(http.StatusOK, body)
