@@ -26,6 +26,6 @@ func CreateChannel(c *gin.Context) {
 	var data model.ChannelInfo
 	data.ChannelPassword = utils.GeneratePassword()
 	_ = c.ShouldBindJSON(&data)
-	body := model.CreateChannel(data)
+	body, _ := model.CreateChannel(data)
 	c.JSON(http.StatusOK, body)
 }
