@@ -15,7 +15,6 @@ func InitRouter() {
 
 	router := r.Group("api/v1")
 	{
-		router.GET("getOnlineUserCount/:id", v1.GetOnlineUserCount)
 		router.POST("addServerInfo", v1.AddServerInfo)
 		router.POST("createChannel", v1.CreateChannel)
 	}
