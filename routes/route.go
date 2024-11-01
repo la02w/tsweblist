@@ -18,6 +18,7 @@ func InitRouter() {
 		router.POST("addServerInfo", v1.AddServerInfo)
 		router.POST("createChannel", v1.CreateChannel)
 		router.GET("getServerChannel", v1.GetServerChannel)
+		router.POST("changeChannelPassword", v1.ChangeChannelPassword)
 	}
 	r.Run(utils.GINPORT)
 }

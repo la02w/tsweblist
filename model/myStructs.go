@@ -48,3 +48,8 @@ type ChannelListInfo struct {
 	ChannelClient    string `json:"total_clients"`
 	ChannelMaxClient string `json:"max_client"`
 }
+type ChangeChannelPassword struct {
+	SID   string `json:"sid"`
+	CID   string `json:"cid"`
+	Email string `json:"email"`
+}

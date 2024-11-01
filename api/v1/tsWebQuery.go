@@ -37,3 +37,10 @@ func GetServerChannel(c *gin.Context) {
 		"data": data,
 	})
 }
+
+// 修改ChannelPassword
+func ChangeChannelPassword(c *gin.Context) {
+	var data model.ChangeChannelPassword
+	_ = c.ShouldBindJSON(&data)
+	c.JSON(http.StatusOK, data)
+}
