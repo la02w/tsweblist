@@ -3,6 +3,7 @@ package model
 import (
 	"fmt"
 	"net/url"
+	"strconv"
 	"strings"
 	"time"
 	"tsweblist/utils"
@@ -80,4 +81,41 @@ func CreateChannel(data ChannelInfo) (*ts3.Status, error) {
 	utils.SeedEmail(data.Email, linkUrl)
 	// log.Println(linkUrl)
 	return &resp.Status, nil
+}
+
+// 服务器频道列表获取
+func GetServerChannel() []ServerChannel {
+	var server []TsServerInfo
+	var list []ServerChannel
+	db.Find(&server)
+	for _, s := range server {
+		var channel ServerChannel
+		// 获取服务器信息
+		c, _ := ts3.Login(s.WebQuery, s.Apikey)
+		resp, _ := c.ServerInfo()
+		for _, si := range resp.Body {
+			channel.ServerName = si.ServerName
+			channel.ServerMessage = si.ServerMessage
+			channel.ServerMaxClient = si.ServerMaxClient
+		}
+		// 获取服务器频道信息
+		channellist, _ := c.ChannelList()
+		for _, cl := range channellist.Body {
+			var chl ChannelListInfo
+			chl.ChannelName = cl.ChannelName
+			chl.ChannelID = cl.ChannelID
+			chl.ChannelClient = cl.ChannelClient
+			chl.ChannelMaxClient = "?"
+			data, _ := c.ChannelInfo(cl.ChannelID)
+			for _, info := range data.Body {
+				chl.ChannelMaxClient = info.ChannelMaxClient
+			}
+			channel.ChannelList = append(channel.ChannelList, chl)
+		}
+		//获取服务器在线人数
+		clientlist, _ := c.ClientList()
+		channel.ServerClient = strconv.Itoa(len(clientlist.Body))
+		list = append(list, channel)
+	}
+	return list
 }

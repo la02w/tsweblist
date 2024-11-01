@@ -34,3 +34,17 @@ type ChannelInfo struct {
 	ChannelPassword   string `json:"channel_password"`
 	ChannelMaxclients string `json:"channel_maxclients"`
 }
+
+type ServerChannel struct {
+	ServerName      string            `json:"server_name"`
+	ServerClient    string            `json:"server_client"`
+	ServerMaxClient string            `json:"server_max_client"`
+	ServerMessage   string            `json:"server_message"`
+	ChannelList     []ChannelListInfo `json:"channel_list"`
+}
+type ChannelListInfo struct {
+	ChannelName      string `json:"channel_name"`
+	ChannelID        string `json:"cid"`
+	ChannelClient    string `json:"total_clients"`
+	ChannelMaxClient string `json:"max_client"`
+}

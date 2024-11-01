@@ -32,10 +32,8 @@ func CreateChannel(c *gin.Context) {
 
 // 获取服务器频道列表
 func GetServerChannel(c *gin.Context) {
+	data := model.GetServerChannel()
 	c.JSON(http.StatusOK, gin.H{
-		"status": gin.H{
-			"code":    0,
-			"message": "ok",
-		},
+		"data": data,
 	})
 }
